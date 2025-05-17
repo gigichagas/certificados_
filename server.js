@@ -3,30 +3,37 @@ const fs = require('fs');
 const path = require('path');
 const helmet = require('helmet');
 const cors = require('cors');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Segurança com Helmet
-app.use(helmet({
-  contentSecurityPolicy: false
-}));
+// Caminho da pasta src (onde estão HTML, JS, CSS)
+const base = path.join(__dirname, 'src');
 
-// Permite requisições de qualquer origem (durante o desenvolvimento)
+// Middlewares
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
-
-// Body parser e arquivos estáticos
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'src')));
+
+// Servir arquivos da pasta src (index.html, script.js, style.css)
+app.use(express.static(base));
+
+// Servir assets e traduções
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/lang', express.static(path.join(__dirname, 'lang')));
 
+// Página principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/index.html'));
+  res.sendFile(path.join(base, 'index.html'));
 });
 
+// Caminho para certificados.json (na raiz)
 const arquivo = path.join(__dirname, 'certificados.json');
-if (!fs.existsSync(arquivo)) fs.writeFileSync(arquivo, '[]', 'utf8');
+if (!fs.existsSync(arquivo)) {
+  fs.writeFileSync(arquivo, '[]', 'utf8');
+}
 
+// Rota para salvar certificados
 app.post('/api/certificados', (req, res) => {
   const { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio } = req.body;
 
@@ -38,7 +45,6 @@ app.post('/api/certificados', (req, res) => {
 
   fs.readFile(arquivo, 'utf8', (err, data) => {
     let certificados = [];
-
     if (!err && data) {
       try {
         certificados = JSON.parse(data);
@@ -56,6 +62,7 @@ app.post('/api/certificados', (req, res) => {
   });
 });
 
+// Rota para listar certificados
 app.get('/api/certificados', (req, res) => {
   fs.readFile(arquivo, 'utf8', (err, data) => {
     if (err || !data) return res.json([]);
@@ -68,6 +75,7 @@ app.get('/api/certificados', (req, res) => {
   });
 });
 
+// Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
 });
