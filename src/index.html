@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="title">Gerador de Certificados Online</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather&family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js" defer></script>
+
+</head>
+<body>
+  <div class="wrapper">
+    <header role="banner">
+      <div id="langSwitcher" aria-label="Seletor de idioma">
+        <button class="lang-btn" id="btnLangPt" type="button" aria-label="Português">🇵🇹</button>
+        <button class="lang-btn" id="btnLangEn" type="button" aria-label="Inglês">🇬🇧</button>
+      </div>
+      <h1>
+        <span data-i18n="title">Gerador de Certificados Online</span>
+        <img src="/assets/icone.png" alt="Ícone de certificado" />
+      </h1>
+    </header>
+
+    <main>
+      <p class="subtitulo" data-i18n="subtitle">Crie e baixe certificados personalizados de forma prática e gratuita.</p>
+
+      <section class="modelos">
+        <h2 class="linha-embaixo" data-i18n="selectModel">Escolha seu modelo de certificado</h2>
+        <div class="opcoes-modelos">
+          <img src="/assets/cert1.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 1" />
+          <img src="/assets/cert2.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 2" />
+          <img src="/assets/cert3.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 3" />
+          <img src="/assets/cert4.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 4" />
+          <img src="/assets/cert5.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 5" />
+          <img src="/assets/cert6.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 6" />
+          <img src="/assets/cert7.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 7" />
+          <img src="/assets/cert8.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 8" />
+        </div>
+      </section>
+
+      <section class="formulario" style="display:none">
+        <h2 data-i18n="formTitle">Preencha os dados abaixo:</h2>
+        <form id="certForm">
+          <input type="text" id="aluno" placeholder="Nome do aluno *" required />
+          <input type="text" id="curso" placeholder="Nome do Curso *" required />
+          <input type="text" id="instituicao" placeholder="Nome da instituição/Responsável *" required />
+          <input type="text" id="carga" placeholder="Carga horária *" required />
+          <input type="date" id="data1" />
+          <input type="date" id="data2" />
+
+          <div class="assinatura">
+            <label for="assinaturaCanvas" data-i18n="signatureLabel">Assinatura:</label>
+            <canvas id="assinaturaCanvas" width="300" height="100"></canvas>
+            <div class="botoes-assinatura">
+              <button type="button" id="limparCanvas" data-i18n="clearSignatureBtn">Limpar assinatura</button>
+              <button type="button" id="assinaturaTextoBtn" data-i18n="styledSignatureBtn">Assinatura estilizada</button>
+              <input type="text" id="assinaturaEstilizada" data-i18n-placeholder="styledSignaturePlaceholder" placeholder="Digite a assinatura" style="display:none;" />
+            </div>
+          </div>
+
+          <button type="submit" data-i18n="generateBtn">Gerar Certificado</button>
+          <button type="button" id="btnHistoricoForm" data-i18n="viewHistory">Ver Histórico</button>
+        </form>
+      </section>
+
+      <section id="certificadoPronto" style="display:none">
+        <h2>Certificado Pronto</h2>
+        <div id="certificadoVisualizacao"></div>
+        <button id="baixarPdf" type="button" data-i18n="downloadBtn">Baixar PDF</button>
+      </section>
+
+      <section id="historicoCertificados" style="display:none">
+        <div id="listaHistorico"></div>
+        <button type="button" id="btnVoltar" data-i18n="backBtn">Voltar</button>
+      </section>
+
+      <footer>
+        <div class="footer-content">
+          <p>&copy; 2025 - Gerador de Certificados Online</p>
+          
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
