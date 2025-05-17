@@ -27,19 +27,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   let desenhando = false;
 
-  canvas.addEventListener('mousedown', () => { desenhando = true; });
-  canvas.addEventListener('mouseup', () => { desenhando = false; ctx.beginPath(); });
-  canvas.addEventListener('mousemove', e => {
-    if (!desenhando) return;
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
-    const rect = canvas.getBoundingClientRect();
-    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-  });
+  // Desenho com mouse
+canvas.addEventListener('mousedown', e => {
+  desenhando = true;
+  desenhar(e.clientX, e.clientY);
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (!desenhando) return;
+  desenhar(e.clientX, e.clientY);
+});
+
+canvas.addEventListener('mouseup', () => {
+  desenhando = false;
+  ctx.beginPath();
+});
+
+// Desenho com toque (mobile)
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault(); // evitar rolagem da tela
+  desenhando = true;
+  const touch = e.touches[0];
+  desenhar(touch.clientX, touch.clientY);
+});
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!desenhando) return;
+  const touch = e.touches[0];
+  desenhar(touch.clientX, touch.clientY);
+});
+
+canvas.addEventListener('touchend', () => {
+  desenhando = false;
+  ctx.beginPath();
+});
+
+// Função comum de desenho
+function desenhar(x, y) {
+  const rect = canvas.getBoundingClientRect();
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#000';
+  ctx.lineTo(x - rect.left, y - rect.top);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x - rect.left, y - rect.top);
+}
 
   document.getElementById('limparCanvas').addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

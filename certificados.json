@@ -1472,5 +1472,16 @@
     "assinaturaTexto": "",
     "modelo": "assets/cert3.png",
     "dataEnvio": "2025-05-17T19:40:28.980Z"
+  },
+  {
+    "aluno": "Giovana Chagas Hider",
+    "curso": "Técnico em Telecomunicação",
+    "instituicao": "Alura",
+    "carga": "72 horas",
+    "data1": "2025-05-17",
+    "data2": "",
+    "assinaturaTexto": "Gabriel Rodrigues",
+    "modelo": "assets/cert3.png",
+    "dataEnvio": "2025-05-17T19:46:18.103Z"
   }
 ]
