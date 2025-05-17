@@ -7,30 +7,26 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Caminho da pasta src (onde estão HTML, JS, CSS)
-const base = path.join(__dirname, 'src');
+// Caminho absoluto da pasta 'src'
+const srcPath = path.join(__dirname, 'src');
 
 // Middlewares
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json());
 
-// Servir arquivos da pasta src (index.html, script.js, style.css)
-app.use(express.static(base));
+// Serve toda a pasta 'src' como pública (inclui index.html, style.css, script.js, assets, lang)
+app.use(express.static(srcPath));
 
-// Servir assets e traduções
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/lang', express.static(path.join(__dirname, 'lang')));
-
-// Página principal
+// Rota principal
 app.get('/', (req, res) => {
-  res.sendFile(path.join(base, 'index.html'));
+  res.sendFile(path.join(srcPath, 'index.html'));
 });
 
-// Caminho para certificados.json (na raiz)
-const arquivo = path.join(__dirname, 'certificados.json');
-if (!fs.existsSync(arquivo)) {
-  fs.writeFileSync(arquivo, '[]', 'utf8');
+// Caminho do JSON de certificados
+const certificadosPath = path.join(__dirname, 'certificados.json');
+if (!fs.existsSync(certificadosPath)) {
+  fs.writeFileSync(certificadosPath, '[]', 'utf8');
 }
 
 // Rota para salvar certificados
@@ -43,7 +39,7 @@ app.post('/api/certificados', (req, res) => {
 
   const novoCertificado = { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio };
 
-  fs.readFile(arquivo, 'utf8', (err, data) => {
+  fs.readFile(certificadosPath, 'utf8', (err, data) => {
     let certificados = [];
     if (!err && data) {
       try {
@@ -55,7 +51,7 @@ app.post('/api/certificados', (req, res) => {
 
     certificados.push(novoCertificado);
 
-    fs.writeFile(arquivo, JSON.stringify(certificados, null, 2), err => {
+    fs.writeFile(certificadosPath, JSON.stringify(certificados, null, 2), err => {
       if (err) return res.status(500).json({ erro: 'Erro ao salvar certificado.' });
       res.status(201).json({ mensagem: 'Certificado salvo com sucesso.' });
     });
@@ -64,7 +60,7 @@ app.post('/api/certificados', (req, res) => {
 
 // Rota para listar certificados
 app.get('/api/certificados', (req, res) => {
-  fs.readFile(arquivo, 'utf8', (err, data) => {
+  fs.readFile(certificadosPath, 'utf8', (err, data) => {
     if (err || !data) return res.json([]);
     try {
       const certificados = JSON.parse(data);

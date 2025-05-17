@@ -1450,5 +1450,27 @@
     "assinaturaTexto": "",
     "modelo": "/assets/cert3.png",
     "dataEnvio": "2025-05-17T17:02:26.199Z"
+  },
+  {
+    "aluno": "Giovana Chagas Hider",
+    "curso": "Manicure",
+    "instituicao": "Efetec",
+    "carga": "6",
+    "data1": "2025-05-14",
+    "data2": "",
+    "assinaturaTexto": "",
+    "modelo": "/src/assets/cert4.png",
+    "dataEnvio": "2025-05-17T18:31:55.191Z"
+  },
+  {
+    "aluno": "Giovana Chagas Hider",
+    "curso": "Manicure",
+    "instituicao": "Efetec",
+    "carga": "6",
+    "data1": "2025-05-14",
+    "data2": "",
+    "assinaturaTexto": "",
+    "modelo": "assets/cert3.png",
+    "dataEnvio": "2025-05-17T19:40:28.980Z"
   }
 ]
