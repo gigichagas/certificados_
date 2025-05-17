@@ -79,3 +79,6 @@ app.get('/api/certificados', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
 });
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
