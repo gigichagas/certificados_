@@ -1,8 +1,114 @@
-let modeloSelecionado = null;
+let modeloSelecionado = '';
 let currentTexts = {};
+addEventListener('DOMContentLoaded', () => {
+  // Referências principais
+  const loginSection = document.getElementById('loginSection');
+  const registerSection = document.getElementById('registerSection');
+  const modelosSection = document.querySelector('.modelos');
+  const formularioSection = document.querySelector('.formulario');
+  const subtitulo = document.querySelector('.subtitulo');
+  const certificadoProntoSection = document.getElementById('certificadoPronto');
+  const historicoSection = document.getElementById('historicoCertificados');
 
-document.addEventListener('DOMContentLoaded', () => {
+  const btnLogin = document.getElementById('loginBtn');
+  const btnShowRegister = document.getElementById('showRegisterBtn');
+  const btnShowLogin = document.getElementById('showLoginBtn');
+  const btnContinueWithoutLogin = document.getElementById('continueWithoutLoginBtn');
+  const btnLogout = document.getElementById('logoutBtn');
+  const btnVerHistorico = document.getElementById('btnHistoricoForm');
+  const btnVoltarHistorico = document.getElementById('btnVoltar');
+
+  function mostrarLogin() {
+    loginSection.style.display = 'block';
+    registerSection.style.display = 'none';
+    modelosSection.style.display = 'none';
+    formularioSection.style.display = 'none';
+    subtitulo.style.display = 'none';
+    certificadoProntoSection.style.display = 'none';
+    historicoSection.style.display = 'none';
+    btnLogout.style.display = 'none';
+    btnVerHistorico.style.display = 'none';
+  }
+
+  function mostrarConteudoLogado() {
+    loginSection.style.display = 'none';
+    registerSection.style.display = 'none';
+    modelosSection.style.display = 'block';
+    formularioSection.style.display = 'block';
+    subtitulo.style.display = 'block';
+    certificadoProntoSection.style.display = 'none';
+    historicoSection.style.display = 'none';
+    btnLogout.style.display = 'inline-block';
+    btnVerHistorico.style.display = 'inline-block';
+  }
+
+  function mostrarConteudoSemLogin() {
+    loginSection.style.display = 'none';
+    registerSection.style.display = 'none';
+    modelosSection.style.display = 'block';
+    formularioSection.style.display = 'block';
+    subtitulo.style.display = 'block';
+    certificadoProntoSection.style.display = 'none';
+    historicoSection.style.display = 'none';
+    btnLogout.style.display = 'none';
+    btnVerHistorico.style.display = 'none';
+  }
+
+  mostrarLogin();
+
+  btnShowRegister.addEventListener('click', () => {
+    loginSection.style.display = 'none';
+    registerSection.style.display = 'block';
+  });
+
+  btnShowLogin.addEventListener('click', () => {
+    mostrarLogin();
+  });
+
+  btnLogin.addEventListener('click', () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const senha = document.getElementById('loginPass').value.trim();
+    if (!email || !senha) return alert('Preencha email e senha!');
+    firebase.auth().signInWithEmailAndPassword(email, senha)
+      .then(() => mostrarConteudoLogado())
+      .catch(error => alert('Erro ao entrar: ' + error.message));
+  });
+
+  document.getElementById('registerBtn').addEventListener('click', () => {
+    const email = document.getElementById('registerEmail').value.trim();
+    const senha = document.getElementById('registerPass').value.trim();
+    if (!email || !senha) return alert('Preencha email e senha!');
+    firebase.auth().createUserWithEmailAndPassword(email, senha)
+      .then(() => mostrarConteudoLogado())
+      .catch(error => alert('Erro ao cadastrar: ' + error.message));
+  });
+
+  btnLogout.addEventListener('click', () => {
+    firebase.auth().signOut().then(() => mostrarLogin());
+  });
+
+  btnContinueWithoutLogin.addEventListener('click', () => {
+    mostrarConteudoSemLogin();
+  });
+
+  btnVerHistorico.addEventListener('click', () => {
+    modelosSection.style.display = 'none';
+    formularioSection.style.display = 'none';
+    subtitulo.style.display = 'none';
+    certificadoProntoSection.style.display = 'none';
+    historicoSection.style.display = 'block';
+  });
+
+  btnVoltarHistorico.addEventListener('click', () => {
+    historicoSection.style.display = 'none';
+    modelosSection.style.display = 'block';
+    formularioSection.style.display = 'block';
+    subtitulo.style.display = 'block';
+  });
+
+
   // Selecionar modelo
+
   document.querySelectorAll('.modelo').forEach(img => {
     img.addEventListener('click', () => {
       document.querySelector('.formulario').style.display = 'block';
@@ -13,8 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Linguagem
-  document.getElementById('btnLangPt').addEventListener('click', () => setLanguage('pt'));
-  document.getElementById('btnLangEn').addEventListener('click', () => setLanguage('en'));
+document.getElementById('btnLangPt').addEventListener('click', () => {
+  setLanguage('pt');
+  atualizarTextosNaTela();
+});
+document.getElementById('btnLangEn').addEventListener('click', () => {
+  setLanguage('en');
+  atualizarTextosNaTela();
+});
+
 
   // Alternar campo de assinatura estilizada
   document.getElementById('assinaturaTextoBtn').addEventListener('click', () => {
@@ -284,10 +397,11 @@ function gerarPdfHistorico(cert) {
 }
 
 function setLanguage(lang) {
-  fetch(`/lang/${lang}.json`)
+  fetch(`lang/${lang}.json`)
     .then(res => res.json())
     .then(data => {
       currentTexts = data;
+      atualizarTextosNaTela(); // garante que tudo é atualizado de forma consistente
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (data[key]) el.textContent = data[key];
@@ -300,6 +414,94 @@ function setLanguage(lang) {
       document.getElementById('limparCanvas').textContent = data.clearSignatureBtn;
       document.getElementById('assinaturaTextoBtn').textContent = data.styledSignatureBtn;
     });
+}
+
+function atualizarTextosNaTela() {
+  // Título da página
+  document.title = currentTexts.title;
+
+  // Cabeçalho principal
+  const tituloEl = document.querySelector('.titulo');
+  if (tituloEl) tituloEl.textContent = currentTexts.title;
+
+  const subtituloEl = document.querySelector('.subtitulo');
+  if (subtituloEl) subtituloEl.textContent = currentTexts.subtitle;
+
+  const tituloFormEl = document.getElementById('tituloForm');
+  if (tituloFormEl) tituloFormEl.textContent = currentTexts.formTitle;
+
+  const btnHistoricoFormEl = document.getElementById('btnHistoricoForm');
+  if (btnHistoricoFormEl) btnHistoricoFormEl.textContent = currentTexts.viewHistory;
+
+  const baixarPdfEl = document.getElementById('baixarPdf');
+  if (baixarPdfEl) baixarPdfEl.textContent = currentTexts.downloadBtn;
+
+  // Labels do formulário principal
+  const alunoLabelEl = document.getElementById('alunoLabel');
+  if (alunoLabelEl) alunoLabelEl.textContent = currentTexts.aluno;
+
+  const cursoLabelEl = document.getElementById('cursoLabel');
+  if (cursoLabelEl) cursoLabelEl.textContent = currentTexts.curso;
+
+  const instituicaoLabelEl = document.getElementById('instituicaoLabel');
+  if (instituicaoLabelEl) instituicaoLabelEl.textContent = currentTexts.instituicao;
+
+  const cargaLabelEl = document.getElementById('cargaLabel');
+  if (cargaLabelEl) cargaLabelEl.textContent = currentTexts.carga;
+
+  const styledSignatureLabelEl = document.getElementById('styledSignatureLabel');
+  if (styledSignatureLabelEl) styledSignatureLabelEl.textContent = currentTexts.signatureLabel;
+
+  // Botões e inputs da assinatura
+  const limparCanvasEl = document.getElementById('limparCanvas');
+  if (limparCanvasEl) limparCanvasEl.textContent = currentTexts.clearSignatureBtn;
+
+  const assinaturaTextoBtnEl = document.getElementById('assinaturaTextoBtn');
+  if (assinaturaTextoBtnEl) assinaturaTextoBtnEl.textContent = currentTexts.styledSignatureBtn;
+
+  const assinaturaEstilizadaEl = document.getElementById('assinaturaEstilizada');
+  if (assinaturaEstilizadaEl) assinaturaEstilizadaEl.placeholder = currentTexts.styledSignaturePlaceholder;
+
+  // Login
+  const loginTituloEl = document.getElementById('loginTitulo');
+  if (loginTituloEl) loginTituloEl.textContent = currentTexts.login.title;
+
+  const loginEmailEl = document.getElementById('loginEmail');
+  if (loginEmailEl) loginEmailEl.placeholder = currentTexts.login.emailPlaceholder;
+
+  const loginPassEl = document.getElementById('loginPass');
+  if (loginPassEl) loginPassEl.placeholder = currentTexts.login.passwordPlaceholder;
+
+  const loginBtnEl = document.getElementById('loginBtn');
+  if (loginBtnEl) loginBtnEl.textContent = currentTexts.login.button;
+
+  const noAccountTextEl = document.getElementById('noAccountText');
+  if (noAccountTextEl) noAccountTextEl.textContent = currentTexts.login.noAccount;
+
+  const showRegisterBtnEl = document.getElementById('showRegisterBtn');
+  if (showRegisterBtnEl) showRegisterBtnEl.textContent = currentTexts.login.registerLink;
+
+  const continueWithoutLoginBtnEl = document.getElementById('continueWithoutLoginBtn');
+  if (continueWithoutLoginBtnEl) continueWithoutLoginBtnEl.textContent = currentTexts.login.continueWithoutLogin;
+
+  // Cadastro
+  const registerTituloEl = document.getElementById('registerTitulo');
+  if (registerTituloEl) registerTituloEl.textContent = currentTexts.register.title;
+
+  const registerEmailEl = document.getElementById('registerEmail');
+  if (registerEmailEl) registerEmailEl.placeholder = currentTexts.register.emailPlaceholder;
+
+  const registerPassEl = document.getElementById('registerPass');
+  if (registerPassEl) registerPassEl.placeholder = currentTexts.register.passwordPlaceholder;
+
+  const registerBtnEl = document.getElementById('registerBtn');
+  if (registerBtnEl) registerBtnEl.textContent = currentTexts.register.button;
+
+  const alreadyHaveAccountTextEl = document.getElementById('alreadyHaveAccountText');
+  if (alreadyHaveAccountTextEl) alreadyHaveAccountTextEl.textContent = currentTexts.register.alreadyHaveAccount;
+
+  const showLoginBtnEl = document.getElementById('showLoginBtn');
+  if (showLoginBtnEl) showLoginBtnEl.textContent = currentTexts.register.loginLink;
 }
 
 function ajustarCorTexto(certificado) {

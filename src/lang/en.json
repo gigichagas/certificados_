@@ -24,10 +24,28 @@
   "historyTitle": "Certificate History",
   "backBtn": "Back",
   "alunoLabel": "Student",
-"cursoLabel": "Course",
-"instituicaoLabel": "Institution",
-"cargaLabel": "Workload",
-"periodoLabel": "Period",
-"dataEnvioLabel": "Submission date",
-"nenhumCertificado": "No certificates found."
+  "cursoLabel": "Course",
+  "instituicaoLabel": "Institution",
+  "cargaLabel": "Workload",
+  "periodoLabel": "Period",
+  "dataEnvioLabel": "Submission date",
+  "nenhumCertificado": "No certificates found.",
+  "login": {
+    "title": "Login",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "button": "Sign In",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register",
+    "continueWithoutLogin": "Continue without login"
+  },
+  "register": {
+    "title": "Register",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "button": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Sign In"
+  }
 }
+

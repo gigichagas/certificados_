@@ -23,12 +23,27 @@
   "viewHistory": "Ver Histórico",
   "historyTitle": "Histórico de Certificados",
   "backBtn": "Voltar",
-   "alunoLabel": "Aluno",
+  "alunoLabel": "Aluno",
   "cursoLabel": "Curso",
   "instituicaoLabel": "Instituição",
   "cargaLabel": "Carga horária",
   "periodoLabel": "Período",
   "dataEnvioLabel": "Data de envio",
-  "nenhumCertificado": "Nenhum certificado encontrado."
-}
-
+  "nenhumCertificado": "Nenhum certificado encontrado.",
+  "login": {
+    "title": "Login",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Senha",
+    "button": "Entrar",
+    "noAccount": "Não tem conta?",
+    "registerLink": "Cadastre-se",
+    "continueWithoutLogin": "Continuar sem login"
+  },
+  "register": {
+    "title": "Cadastro",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Senha",
+    "button": "Cadastrar",
+    "alreadyHaveAccount": "Já tem conta?",
+    "loginLink": "Entrar"
+  }}

@@ -20,7 +20,91 @@ body {
   display: flex;
   flex-direction: column;
 }
+/* Estilização da tela de login e cadastro */
+#loginSection, #registerSection {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(29, 78, 216, 0.2);
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+}
 
+#loginSection h2,
+#registerSection h2 {
+  color: #1d4ed8;
+  margin-bottom: 25px;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+#loginSection input,
+#registerSection input {
+  width: 100%;
+  padding: 12px 4px;
+  margin-bottom: 18px;
+  border: 1.8px solid #1d4ed8;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+#loginSection input:focus,
+#registerSection input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+#loginSection button,
+#registerSection button,
+#loginSection p button,
+#registerSection p button {
+  background-color: #1d4ed8;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+}
+
+#loginSection button:hover,
+#registerSection button:hover,
+#loginSection p button:hover,
+#registerSection p button:hover {
+  background-color: #1e40af;
+}
+
+#loginSection p,
+#registerSection p {
+  font-size: 14px;
+  color: #374151;
+}
+
+#loginSection p button,
+#registerSection p button {
+  background: none;
+  color: #2563eb;
+  padding: 0;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+#loginSection p button:hover,
+#registerSection p button:hover {
+  color: #8fa8fa;
+  text-decoration: none;
+}
 header {
   background-color: #1d4ed8;
   color: #ffffff;
