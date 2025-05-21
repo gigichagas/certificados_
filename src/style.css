@@ -20,6 +20,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
 /* Estilização da tela de login e cadastro */
 #loginSection, #registerSection {
   max-width: 400px;
@@ -457,178 +458,62 @@ footer {
   background-color: #1d4ed8;
   color: white;
   text-align: center;
-  padding: 40px;
+  padding: 40px 20px;
+  font-family: "Montserrat", sans-serif;
   margin-top: auto;
 }
 
-footer a {
-  color: #ffffff;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: 600;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-.footer-content {
-  max-width: 800px;
+footer .container {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-/* RESPONSIVIDADE */
-
-@media (max-width: 900px) {
-  .modelo {
-    width: 150px;
-  }
-
-  .formulario form {
-    max-width: 90vw;
-    padding: 20px;
-  }
-
-  input[type="text"],
-  input[type="date"] {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  /* Certificado responsivo */
-  .certificado-gerado h1 {
-    font-size: 5vw;
-  }
-
-  .certificado-gerado p,
-  .certificado-gerado h3 {
-    font-size: 3vw;
-  }
-
-  .certificado-gerado .assinatura-certificado span {
-    font-size: 4vw;
-  }
-
-  .certificado-gerado .assinatura-certificado p {
-    font-size: 3vw;
-  }
-
-  .certificado-gerado .assinatura-certificado {
-    max-width: 80vw;
-  }
-
-  /* Botão baixar PDF no fluxo normal (fora do certificado) */
-  #baixarPdf {
-    position: static;
-    display: block;
-    width: fit-content;
-    margin: 10px auto 20px;
-    font-size: 0.9rem;
-    padding: 8px 12px;
-  }
+footer .social-icons {
+  margin: 15px 0;
 }
 
-@media (max-width: 500px) {
-  .modelo {
-    width: 100px;
-  }
-
-  .formulario form {
-    max-width: 95vw;
-    padding: 15px;
-  }
-
-  input[type="text"],
-  input[type="date"] {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  button {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  #baixarPdf {
-    position: static;
-    display: block;
-    width: fit-content;
-    margin: 10px auto 20px;
-    font-size: 0.9rem;
-    padding: 8px 12px;
-  }
-
-  .certificado-gerado h1 {
-    font-size: 7vw;
-  }
-
-  .certificado-gerado p,
-  .certificado-gerado h3 {
-    font-size: 4vw;
-  }
-
-  .certificado-gerado .assinatura-certificado span {
-    font-size: 5vw;
-  }
-
-  .certificado-gerado .assinatura-certificado p {
-    font-size: 4vw;
-  }
-
-  .certificado-gerado .assinatura-certificado {
-    max-width: 95vw;
-  }
-
-  #assinaturaCanvas,
-  #assinaturaEstilizada {
-    max-width: 100%;
-    width: 90vw;
-    height: auto !important;
-  }
-}
-.user-avatar {
-  background-color: #333;
+footer .social-icons a {
   color: white;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 16px;
-  cursor: pointer;
+  margin: 0 10px;
+  font-size: 24px;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 45px;
-  right: 0;
-  background: #333;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  min-width: 180px;
-  z-index: 10;
+footer .social-icons a:hover {
+  color: #93c5fd;
 }
 
-.dropdown-menu p {
-  margin: 0 0 10px;
+footer p {
+  margin: 5px 0;
   font-size: 14px;
 }
 
-.dropdown-menu button {
-  background: #444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  width: 100%;
-}
-
-.dropdown-menu button:hover {
-  background: #555;
+@media (max-width: 600px) {
+  #loginSection, #registerSection {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  .opcoes-modelos {
+    flex-direction: column;
+    align-items: center;
+  }
+  .modelo {
+    width: 90%;
+    max-width: 300px;
+  }
+  .formulario form {
+    padding: 20px 10px;
+  }
+  .certificado-gerado h1 {
+    font-size: 6vw;
+  }
+  .certificado-gerado p, .certificado-gerado h3 {
+    font-size: 3vw;
+  }
+  footer .social-icons a {
+    font-size: 28px;
+    margin: 0 8px;
+  }
 }
