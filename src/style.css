@@ -105,6 +105,34 @@ body {
   color: #8fa8fa;
   text-decoration: none;
 }
+.user-menu {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #673ab7;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
 header {
   background-color: #1d4ed8;
   color: #ffffff;
@@ -562,4 +590,45 @@ footer a:hover {
     width: 90vw;
     height: auto !important;
   }
+}
+.user-avatar {
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: #333;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 180px;
+  z-index: 10;
+}
+
+.dropdown-menu p {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.dropdown-menu button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.dropdown-menu button:hover {
+  background: #555;
 }

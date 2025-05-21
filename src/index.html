@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="title">Gerador de Certificados Online</title>
 
   <!-- Estilos e fontes -->
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather&family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather&family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
 
   <!-- Bibliotecas de PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -30,123 +30,136 @@
   </script>
 
   <!-- Script principal -->
-  <script type="module" src="script.js"></script>
+  <script src="script.js" type="module"></script>
 </head>
-
 <body>
   <div class="wrapper">
+
     <!-- Cabeçalho -->
     <header role="banner">
       <div id="langSwitcher" aria-label="Seletor de idioma">
         <button class="lang-btn" id="btnLangPt" aria-label="Português">🇵🇹</button>
         <button class="lang-btn" id="btnLangEn" aria-label="Inglês">🇬🇧</button>
       </div>
+
       <h1>
         <span data-i18n="title">Gerador de Certificados Online</span>
-        <img src="assets/icone.png" alt="Ícone de certificado" />
+        <img src="assets/icone.png" alt="Ícone de certificado"/>
       </h1>
+
+      <!-- Menu do Usuário (avatar e logout) -->
+      <div class="user-menu" id="userMenu" style="display: none;">
+        <div class="avatar" onclick="toggleDropdown()">
+          <span id="avatarLetter">U</span>
+        </div>
+        <div class="dropdown" id="dropdownMenu" style="display: none;">
+          <p id="userEmail">email@email.com</p>
+          <button id="logoutBtn" data-i18n="logout">Sair</button>
+        </div>
+      </div>
     </header>
 
     <!-- Conteúdo principal -->
-<main>
-  <!-- Seção de Login (aparece inicialmente) -->
-  <section id="loginSection">
-    <h2 data-i18n="login.title">Login</h2>
-    <input id="loginEmail" type="email" placeholder="Email" data-i18n-placeholder="login.emailPlaceholder" />
-    <input id="loginPass" type="password" placeholder="Senha" data-i18n-placeholder="login.passwordPlaceholder" />
-    <button id="loginBtn" data-i18n="login.button">Entrar</button>
-    <p>
-      <span data-i18n="login.noAccount">Não tem conta?</span> 
-      <button id="showRegisterBtn" data-i18n="login.registerLink">Cadastre-se</button>
-    </p>
-    <p>
-      <span>Ou</span> 
-      <button id="continueWithoutLoginBtn" data-i18n="login.continueWithoutLogin">Continuar sem login</button>
-    </p>
-  </section>
+    <main>
+      <!-- Login -->
+      <section id="loginSection">
+        <h2 data-i18n="login.title">Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" data-i18n-placeholder="login.emailPlaceholder"/>
+        <input type="password" id="loginPass" placeholder="Senha" data-i18n-placeholder="login.passwordPlaceholder"/>
+        <button id="loginBtn" data-i18n="login.button">Entrar</button>
+        <p>
+          <span data-i18n="login.noAccount">Não tem conta?</span>
+          <button id="showRegisterBtn" data-i18n="login.registerLink">Cadastre-se</button>
+        </p>
+        <p>
+          <span>Ou</span>
+          <button id="continueWithoutLoginBtn" data-i18n="login.continueWithoutLogin">Continuar sem login</button>
+        </p>
+      </section>
 
-  <!-- Seção de Cadastro -->
-  <section id="registerSection" style="display: none;">
-    <h2 data-i18n="register.title">Cadastro</h2>
-    <input id="registerEmail" type="email" placeholder="Email" data-i18n-placeholder="register.emailPlaceholder" />
-    <input id="registerPass" type="password" placeholder="Senha" data-i18n-placeholder="register.passwordPlaceholder" />
-    <button id="registerBtn" data-i18n="register.button">Cadastrar</button>
-    <p>
-      <span data-i18n="register.alreadyHaveAccount">Já tem conta?</span> 
-      <button id="showLoginBtn" data-i18n="register.loginLink">Entrar</button>
-    </p>
-  </section>
-</main>
+      <!-- Cadastro -->
+      <section id="registerSection" class="hidden">
+        <h2 data-i18n="register.title">Cadastro</h2>
+        <input type="email" id="registerEmail" placeholder="Email" data-i18n-placeholder="register.emailPlaceholder"/>
+        <input type="password" id="registerPass" placeholder="Senha" data-i18n-placeholder="register.passwordPlaceholder"/>
+        <button id="registerBtn" data-i18n="register.button">Cadastrar</button>
+        <p>
+          <span data-i18n="register.alreadyHaveAccount">Já tem conta?</span>
+          <button id="showLoginBtn" data-i18n="register.loginLink">Entrar</button>
+        </p>
+      </section>
 
+      <p class="subtitulo hidden" data-i18n="subtitle">Crie e baixe certificados personalizados de forma prática e gratuita.</p>
 
-      <!-- Subtítulo -->
-      <p class="subtitulo" data-i18n="subtitle" style="display: none;">Crie e baixe certificados personalizados de forma prática e gratuita.</p>
-
-      <!-- Modelos de Certificados -->
-      <section class="modelos" style="display: none;">
+      <!-- Modelos -->
+      <section class="modelos hidden">
         <h2 class="linha-embaixo" data-i18n="selectModel">Escolha seu modelo de certificado</h2>
         <div class="opcoes-modelos">
-          <img src="assets/cert1.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 1" />
-          <img src="assets/cert2.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 2" />
-          <img src="assets/cert3.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 3" />
-          <img src="assets/cert4.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 4" />
-          <img src="assets/cert5.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 5" />
-          <img src="assets/cert6.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 6" />
-          <img src="assets/cert7.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 7" />
-          <img src="assets/cert8.png" class="modelo" role="button" tabindex="0" aria-label="Modelo 8" />
+          <img class="modelo" src="assets/cert1.png"/>
+          <img class="modelo" src="assets/cert2.png"/>
+          <img class="modelo" src="assets/cert3.png"/>
+          <img class="modelo" src="assets/cert4.png"/>
+          <img class="modelo" src="assets/cert5.png"/>
+          <img class="modelo" src="assets/cert6.png"/>
+          <img class="modelo" src="assets/cert7.png"/>
+          <img class="modelo" src="assets/cert8.png"/>
         </div>
       </section>
 
-      <!-- Formulário de Certificado -->
-      <section class="formulario" style="display: none;">
+      <!-- Formulário -->
+      <section class="formulario hidden">
         <h2 data-i18n="formTitle">Preencha os dados abaixo:</h2>
         <form id="certForm">
-          <input type="text" id="aluno" placeholder="Nome do aluno *" required />
-          <input type="text" id="curso" placeholder="Nome do Curso *" required />
-          <input type="text" id="instituicao" placeholder="Nome da instituição/Responsável *" required />
-          <input type="text" id="carga" placeholder="Carga horária *" required />
-          <input type="date" id="data1" />
-          <input type="date" id="data2" />
-
-          <!-- Assinatura -->
+          <input type="text" id="aluno" placeholder="Nome do aluno *" required/>
+          <input type="text" id="curso" placeholder="Nome do Curso *" required/>
+          <input type="text" id="instituicao" placeholder="Nome da instituição/Responsável *" required/>
+          <input type="text" id="carga" placeholder="Carga horária *" required/>
+          <input type="date" id="data1"/>
+          <input type="date" id="data2"/>
+          
           <div class="assinatura">
             <label for="assinaturaCanvas" data-i18n="signatureLabel">Assinatura:</label>
             <canvas id="assinaturaCanvas" width="300" height="100"></canvas>
             <div class="botoes-assinatura">
               <button type="button" id="limparCanvas" data-i18n="clearSignatureBtn">Limpar assinatura</button>
               <button type="button" id="assinaturaTextoBtn" data-i18n="styledSignatureBtn">Assinatura estilizada</button>
-              <input type="text" id="assinaturaEstilizada" placeholder="Digite a assinatura" style="display:none;" />
+              <input type="text" id="assinaturaEstilizada" placeholder="Digite a assinatura" style="display:none;"/>
             </div>
           </div>
 
           <button type="submit" id="btnGerarCertificado" data-i18n="generateBtn">Gerar Certificado</button>
-          <button type="button" id="btnHistoricoForm" data-i18n="viewHistory" style="display: none;">Ver Histórico</button>
+          <button type="button" id="btnHistoricoForm" data-i18n="viewHistory" class="hidden">Ver Histórico</button>
         </form>
       </section>
 
-      <!-- Seção Certificado Pronto -->
-      <section id="certificadoPronto" style="display: none;">
+      <!-- Certificado Pronto -->
+      <section id="certificadoPronto" class="hidden">
         <h2>Certificado Pronto</h2>
         <div id="certificadoVisualizacao"></div>
-        <button id="baixarPdf" type="button" data-i18n="downloadBtn">Baixar PDF</button>
+        <button type="button" id="baixarPdf" data-i18n="downloadBtn">Baixar PDF</button>
       </section>
 
-      <!-- Histórico de Certificados -->
-      <section id="historicoCertificados" style="display: none;">
+      <!-- Histórico -->
+      <section id="historicoCertificados" class="hidden">
         <div id="listaHistorico"></div>
-        <button id="btnVoltar" type="button" data-i18n="backBtn">Voltar</button>
+        <button type="button" id="btnVoltar" data-i18n="backBtn">Voltar</button>
       </section>
-
-      <!-- Botão de Logout -->
-      <button id="logoutBtn" style="display: none;">Sair</button>
     </main>
 
     <!-- Rodapé -->
     <footer>
       <div class="footer-content">
-        <p>&copy; 2025 - Gerador de Certificados Online</p>
+        <p>© 2025 - Gerador de Certificados Online</p>
       </div>
     </footer>
   </div>
+
+  <!-- Script do menu de usuário -->
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
 </body>
 </html>

@@ -30,6 +30,7 @@
   "periodoLabel": "Period",
   "dataEnvioLabel": "Submission date",
   "nenhumCertificado": "No certificates found.",
+  "logout": "Sign Out",
   "login": {
     "title": "Login",
     "emailPlaceholder": "Email",
@@ -47,5 +48,6 @@
     "alreadyHaveAccount": "Already have an account?",
     "loginLink": "Sign In"
   }
+  
 }
 

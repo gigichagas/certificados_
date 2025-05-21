@@ -30,6 +30,7 @@
   "periodoLabel": "Período",
   "dataEnvioLabel": "Data de envio",
   "nenhumCertificado": "Nenhum certificado encontrado.",
+  "logout": "Sair",
   "login": {
     "title": "Login",
     "emailPlaceholder": "Email",

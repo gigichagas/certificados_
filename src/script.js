@@ -72,6 +72,15 @@ addEventListener('DOMContentLoaded', () => {
     firebase.auth().signInWithEmailAndPassword(email, senha)
       .then(() => mostrarConteudoLogado())
       .catch(error => alert('Erro ao entrar: ' + error.message));
+      firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    const email = user.email;
+    document.getElementById('userMenu').style.display = 'flex';
+    document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
+    document.getElementById('userEmail').textContent = email;
+  }
+});
+
   });
 
   document.getElementById('registerBtn').addEventListener('click', () => {
@@ -85,6 +94,13 @@ addEventListener('DOMContentLoaded', () => {
 
   btnLogout.addEventListener('click', () => {
     firebase.auth().signOut().then(() => mostrarLogin());
+    btnLogout.addEventListener('click', () => {
+  firebase.auth().signOut().then(() => {
+    document.getElementById('userMenu').style.display = 'none';
+    mostrarLogin();
+  });
+});
+
   });
 
   btnContinueWithoutLogin.addEventListener('click', () => {
@@ -239,11 +255,9 @@ function desenhar(x, y) {
 
     const certificado = document.createElement('div');
     certificado.className = 'certificado-gerado';
-    certificado.style.cssText = `
-      width: 1000px; height: 700px; background-image: url(${modeloSelecionado});
-      background-size: cover; background-position: center; margin: 0 auto; padding: 50px;
-      box-sizing: border-box; position: relative; font-family: serif; text-align: center;
-    `;
+    certificado.className = 'certificado-gerado';
+    certificado.style.backgroundImage = `url(${modeloSelecionado})`;
+
 
     certificado.innerHTML = `
       <h1 style="font-size: 56px; font-family: 'Merriweather', serif; margin-top: 50px; margin-bottom: 40px;">
@@ -413,6 +427,9 @@ function setLanguage(lang) {
       document.getElementById('assinaturaEstilizada').placeholder = data.styledSignaturePlaceholder;
       document.getElementById('limparCanvas').textContent = data.clearSignatureBtn;
       document.getElementById('assinaturaTextoBtn').textContent = data.styledSignatureBtn;
+      const logoutBtnEl = document.getElementById('logoutBtn');
+      if (logoutBtnEl) logoutBtnEl.textContent = currentTexts.logout;
+
     });
 }
 
@@ -462,27 +479,24 @@ function atualizarTextosNaTela() {
   const assinaturaEstilizadaEl = document.getElementById('assinaturaEstilizada');
   if (assinaturaEstilizadaEl) assinaturaEstilizadaEl.placeholder = currentTexts.styledSignaturePlaceholder;
 
-  // Login
-  const loginTituloEl = document.getElementById('loginTitulo');
-  if (loginTituloEl) loginTituloEl.textContent = currentTexts.login.title;
+// Login
+const loginEmailEl = document.getElementById('loginEmail');
+if (loginEmailEl) loginEmailEl.placeholder = currentTexts.login.emailPlaceholder;
 
-  const loginEmailEl = document.getElementById('loginEmail');
-  if (loginEmailEl) loginEmailEl.placeholder = currentTexts.login.emailPlaceholder;
+const loginPassEl = document.getElementById('loginPass');
+if (loginPassEl) loginPassEl.placeholder = currentTexts.login.passwordPlaceholder;
 
-  const loginPassEl = document.getElementById('loginPass');
-  if (loginPassEl) loginPassEl.placeholder = currentTexts.login.passwordPlaceholder;
+const loginBtnEl = document.getElementById('loginBtn');
+if (loginBtnEl) loginBtnEl.textContent = currentTexts.login.button;
 
-  const loginBtnEl = document.getElementById('loginBtn');
-  if (loginBtnEl) loginBtnEl.textContent = currentTexts.login.button;
+const showRegisterBtnEl = document.getElementById('showRegisterBtn');
+if (showRegisterBtnEl) showRegisterBtnEl.textContent = currentTexts.login.registerLink;
 
-  const noAccountTextEl = document.getElementById('noAccountText');
-  if (noAccountTextEl) noAccountTextEl.textContent = currentTexts.login.noAccount;
+const continueWithoutLoginBtnEl = document.getElementById('continueWithoutLoginBtn');
+if (continueWithoutLoginBtnEl) continueWithoutLoginBtnEl.textContent = currentTexts.login.continueWithoutLogin;
 
-  const showRegisterBtnEl = document.getElementById('showRegisterBtn');
-  if (showRegisterBtnEl) showRegisterBtnEl.textContent = currentTexts.login.registerLink;
-
-  const continueWithoutLoginBtnEl = document.getElementById('continueWithoutLoginBtn');
-  if (continueWithoutLoginBtnEl) continueWithoutLoginBtnEl.textContent = currentTexts.login.continueWithoutLogin;
+const logoutBtnEl = document.getElementById('logoutBtn');
+if (logoutBtnEl) logoutBtnEl.textContent = currentTexts.logout;
 
   // Cadastro
   const registerTituloEl = document.getElementById('registerTitulo');
@@ -579,5 +593,9 @@ function mostrarHistorico() {
             });
         });
       });
+      
     });
+    
+    
 }
+
