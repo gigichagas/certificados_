@@ -9,6 +9,49 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather&family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
 
+  <!-- Correção mobile com barra de rolagem -->
+  <style>
+    @media (max-width: 768px) {
+      #certificadoVisualizacao {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        white-space: nowrap;
+      }
+
+      .certificado-gerado {
+        min-width: 1000px;
+        margin: 0 auto;
+      }
+
+      canvas#assinaturaCanvas {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .opcoes-modelos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .opcoes-modelos img {
+        width: 45%;
+        height: auto;
+      }
+
+      input, button, select, textarea {
+        font-size: 16px !important;
+      }
+
+      form#certForm input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+
   <!-- Bibliotecas de PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -34,20 +77,16 @@
 </head>
 <body>
   <div class="wrapper">
-
     <!-- Cabeçalho -->
     <header role="banner">
       <div id="langSwitcher" aria-label="Seletor de idioma">
         <button class="lang-btn" id="btnLangPt" aria-label="Português">🇵🇹</button>
         <button class="lang-btn" id="btnLangEn" aria-label="Inglês">🇬🇧</button>
       </div>
-
       <h1>
         <span data-i18n="title">Gerador de Certificados Online</span>
         <img src="assets/icone.png" alt="Ícone de certificado"/>
       </h1>
-
-      <!-- Menu do Usuário (avatar e logout) -->
       <div class="user-menu" id="userMenu" style="display: none;">
         <div class="avatar" onclick="toggleDropdown()">
           <span id="avatarLetter">U</span>
@@ -116,7 +155,7 @@
           <input type="text" id="carga" placeholder="Carga horária *" required/>
           <input type="date" id="data1"/>
           <input type="date" id="data2"/>
-          
+
           <div class="assinatura">
             <label for="assinaturaCanvas" data-i18n="signatureLabel">Assinatura:</label>
             <canvas id="assinaturaCanvas" width="300" height="100"></canvas>

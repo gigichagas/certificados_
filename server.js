@@ -60,16 +60,22 @@ app.post('/api/certificados', (req, res) => {
 
 // Rota para listar certificados
 app.get('/api/certificados', (req, res) => {
+  const email = req.query.email;
   fs.readFile(certificadosPath, 'utf8', (err, data) => {
     if (err || !data) return res.json([]);
     try {
       const certificados = JSON.parse(data);
+      if (email) {
+        const filtrados = certificados.filter(cert => cert.email === email);
+        return res.json(filtrados);
+      }
       res.json(certificados);
     } catch (e) {
       res.status(500).json({ erro: 'Erro ao ler certificados.' });
     }
   });
 });
+
 
 // Inicia o servidor
 app.listen(PORT, () => {

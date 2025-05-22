@@ -1,5 +1,6 @@
 let modeloSelecionado = '';
 let currentTexts = {};
+
 addEventListener('DOMContentLoaded', () => {
   // Referências principais
   const loginSection = document.getElementById('loginSection');
@@ -69,11 +70,13 @@ addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('loginEmail').value.trim();
     const senha = document.getElementById('loginPass').value.trim();
     if (!email || !senha) return alert('Preencha email e senha!');
+    
     firebase.auth().signInWithEmailAndPassword(email, senha)
       .then(() => mostrarConteudoLogado())
-      .catch(error => alert('Erro ao entrar: ' + error.message));
-      firebase.auth().onAuthStateChanged(user => {
-  if (user) {
+    .catch(error => alert('Erro ao entrar: ' + error.message));
+
+          firebase.auth().onAuthStateChanged(user => {
+        if (user) {
     const email = user.email;
     document.getElementById('userMenu').style.display = 'flex';
     document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
@@ -81,26 +84,29 @@ addEventListener('DOMContentLoaded', () => {
   }
 });
 
-  });
 
   document.getElementById('registerBtn').addEventListener('click', () => {
     const email = document.getElementById('registerEmail').value.trim();
     const senha = document.getElementById('registerPass').value.trim();
     if (!email || !senha) return alert('Preencha email e senha!');
+    
     firebase.auth().createUserWithEmailAndPassword(email, senha)
       .then(() => mostrarConteudoLogado())
       .catch(error => alert('Erro ao cadastrar: ' + error.message));
   });
 
   btnLogout.addEventListener('click', () => {
-    firebase.auth().signOut().then(() => mostrarLogin());
-    btnLogout.addEventListener('click', () => {
-  firebase.auth().signOut().then(() => {
-    document.getElementById('userMenu').style.display = 'none';
-    mostrarLogin();
-  });
-});
-
+    firebase.auth().signOut().then(() => {
+      // Oculta menu do usuário
+      document.getElementById('userMenu').style.display = 'none';
+      // Limpa os textos do avatar
+      document.getElementById('avatarLetter').textContent = '';
+      document.getElementById('userEmail').textContent = '';
+      // Mostra a tela de login
+      mostrarLogin();
+    }).catch(error => {
+      alert('Erro ao sair: ' + error.message);
+    });
   });
 
   btnContinueWithoutLogin.addEventListener('click', () => {
@@ -122,6 +128,20 @@ addEventListener('DOMContentLoaded', () => {
     subtitulo.style.display = 'block';
   });
 
+  // ✅ Monitoramento de autenticação
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      const email = user.email;
+      document.getElementById('userMenu').style.display = 'flex';
+      document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
+      document.getElementById('userEmail').textContent = email;
+    } else {
+      document.getElementById('userMenu').style.display = 'none';
+      document.getElementById('avatarLetter').textContent = '';
+      document.getElementById('userEmail').textContent = '';
+    }
+  });
+});
 
   // Selecionar modelo
 
@@ -554,47 +574,45 @@ function mostrarHistorico() {
 
   const lista = document.getElementById('listaHistorico');
   lista.innerHTML = '';
+const user = firebase.auth().currentUser;
+const email = user ? user.email : null;
 
-  fetch('http://localhost:3000/api/certificados')
-    .then(res => res.json())
-    .then(certificados => {
-      if (!certificados.length) {
-        lista.innerHTML = `<p>${currentTexts.nenhumCertificado}</p>`;
-        return;
-      }
+fetch(`https://certificados-production.up.railway.app/api/certificados?email=${encodeURIComponent(email)}`)
+  .then(res => res.json())
+  .then(certificados => {
+    if (!certificados.length) {
+      lista.innerHTML = `<p>${currentTexts.nenhumCertificado}</p>`;
+      return;
+    }
 
-      certificados.reverse().forEach((cert, index) => {
-        const item = document.createElement('div');
-        item.className = 'historico-item';
-        item.style.border = '1px solid #ccc';
-        item.style.padding = '10px';
-        item.style.marginBottom = '10px';
+    certificados.reverse().forEach((cert, index) => {
+      const item = document.createElement('div');
+      item.className = 'historico-item';
+      item.style.border = '1px solid #ccc';
+      item.style.padding = '10px';
+      item.style.marginBottom = '10px';
 
-        item.innerHTML = `
-          <p><strong>${currentTexts.alunoLabel}:</strong> ${cert.aluno}</p>
-          <p><strong>${currentTexts.cursoLabel}:</strong> ${cert.curso}</p>
-          <p><strong>${currentTexts.instituicaoLabel}:</strong> ${cert.instituicao}</p>
-          <p><strong>${currentTexts.cargaLabel}:</strong> ${cert.carga}</p>
-          <p><strong>${currentTexts.periodoLabel}:</strong> ${cert.data1}${cert.data2 ? ' - ' + cert.data2 : ''}</p>
-          <p><strong>${currentTexts.dataEnvioLabel}:</strong> ${new Date(cert.dataEnvio).toLocaleString()}</p>
-          <button type="button" class="baixarPdfHistoricoBtn" data-index="${index}">${currentTexts.downloadBtn}</button>
-        `;
+      item.innerHTML = `
+        <p><strong>${currentTexts.alunoLabel}:</strong> ${cert.aluno}</p>
+        <p><strong>${currentTexts.cursoLabel}:</strong> ${cert.curso}</p>
+        <p><strong>${currentTexts.instituicaoLabel}:</strong> ${cert.instituicao}</p>
+        <p><strong>${currentTexts.cargaLabel}:</strong> ${cert.carga}</p>
+        <p><strong>${currentTexts.periodoLabel}:</strong> ${cert.data1}${cert.data2 ? ' - ' + cert.data2 : ''}</p>
+        <p><strong>${currentTexts.dataEnvioLabel}:</strong> ${new Date(cert.dataEnvio).toLocaleString()}</p>
+        <button type="button" class="baixarPdfHistoricoBtn" data-index="${index}">${currentTexts.downloadBtn}</button>
+      `;
 
-        lista.appendChild(item);
-      });
-
-      document.querySelectorAll('.baixarPdfHistoricoBtn').forEach(button => {
-        button.addEventListener('click', e => {
-          const idx = e.target.getAttribute('data-index');
-          fetch('http://localhost:3000/api/certificados')
-            .then(res => res.json())
-            .then(certificadosAtualizados => {
-              gerarPdfHistorico(certificadosAtualizados[certificadosAtualizados.length - 1 - idx]);
-            });
-        });
-      });
-      
+      lista.appendChild(item);
     });
+
+    // Botões de PDF
+    document.querySelectorAll('.baixarPdfHistoricoBtn').forEach(button => {
+      button.addEventListener('click', e => {
+        const idx = e.target.getAttribute('data-index');
+        gerarPdfHistorico(certificados[certificados.length - 1 - idx]);
+      });
+    });
+  });
     
     
 }
