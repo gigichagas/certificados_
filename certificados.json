@@ -1901,5 +1901,27 @@
     "assinaturaTexto": "",
     "modelo": "assets/cert2.png",
     "dataEnvio": "2025-05-22T00:12:43.107Z"
+  },
+  {
+    "aluno": "Giovana Chagas Hider",
+    "curso": "Técnico em Telecomunicação",
+    "instituicao": "Efetec",
+    "carga": "4",
+    "data1": "2025-05-20",
+    "data2": "",
+    "assinaturaTexto": "",
+    "modelo": "assets/cert2.png",
+    "dataEnvio": "2025-05-22T00:24:12.702Z"
+  },
+  {
+    "aluno": "Giovana Chagas Hider",
+    "curso": "Técnico em Telecomunicação",
+    "instituicao": "Efetec",
+    "carga": "4",
+    "data1": "2025-05-20",
+    "data2": "",
+    "assinaturaTexto": "",
+    "modelo": "assets/cert2.png",
+    "dataEnvio": "2025-05-22T00:24:21.440Z"
   }
 ]

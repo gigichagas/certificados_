@@ -1,5 +1,7 @@
 let modeloSelecionado = '';
 let currentTexts = {};
+let emailUsuarioLogado = null;
+
 
 addEventListener('DOMContentLoaded', () => {
   // Referências principais
@@ -75,14 +77,6 @@ addEventListener('DOMContentLoaded', () => {
       .then(() => mostrarConteudoLogado())
     .catch(error => alert('Erro ao entrar: ' + error.message));
 
-          firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-    const email = user.email;
-    document.getElementById('userMenu').style.display = 'flex';
-    document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
-    document.getElementById('userEmail').textContent = email;
-  }
-});
 
 
   document.getElementById('registerBtn').addEventListener('click', () => {
@@ -129,18 +123,33 @@ addEventListener('DOMContentLoaded', () => {
   });
 
   // ✅ Monitoramento de autenticação
-  firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-      const email = user.email;
-      document.getElementById('userMenu').style.display = 'flex';
-      document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
-      document.getElementById('userEmail').textContent = email;
-    } else {
-      document.getElementById('userMenu').style.display = 'none';
-      document.getElementById('avatarLetter').textContent = '';
-      document.getElementById('userEmail').textContent = '';
-    }
-  });
+ // Monitoramento de autenticação, só uma vez no script
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    const email = user.email;
+    document.getElementById('userMenu').style.display = 'flex';
+    document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
+    document.getElementById('userEmail').textContent = email;
+    mostrarConteudoLogado();
+    carregarHistorico(email); // Carregar histórico se quiser
+  } else {
+    document.getElementById('userMenu').style.display = 'none';
+    document.getElementById('avatarLetter').textContent = '';
+    document.getElementById('userEmail').textContent = '';
+    mostrarLogin();
+  }
+});
+
+// Botão login
+btnLogin.addEventListener('click', () => {
+  const email = document.getElementById('loginEmail').value.trim();
+  const senha = document.getElementById('loginPass').value.trim();
+  if (!email || !senha) return alert('Preencha email e senha!');
+
+  firebase.auth().signInWithEmailAndPassword(email, senha)
+    .catch(error => alert('Erro ao entrar: ' + error.message));
+});
+
 });
 
   // Selecionar modelo
