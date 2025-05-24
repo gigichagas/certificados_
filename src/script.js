@@ -2,8 +2,10 @@ let modeloSelecionado = '';
 let currentTexts = {};
 let emailUsuarioLogado = null;
 
-
 addEventListener('DOMContentLoaded', () => {
+  // ✅ Se quiser sempre iniciar deslogado, descomente a linha abaixo:
+  // firebase.auth().signOut().then(() => console.log('Sessão limpa ao iniciar'));
+
   // Referências principais
   const loginSection = document.getElementById('loginSection');
   const registerSection = document.getElementById('registerSection');
@@ -72,31 +74,31 @@ addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('loginEmail').value.trim();
     const senha = document.getElementById('loginPass').value.trim();
     if (!email || !senha) return alert('Preencha email e senha!');
-    
+
     firebase.auth().signInWithEmailAndPassword(email, senha)
-      .then(() => mostrarConteudoLogado())
-    .catch(error => alert('Erro ao entrar: ' + error.message));
-
-
+      .then(() => {
+        mostrarConteudoLogado();
+      })
+      .catch(error => alert('Erro ao entrar: ' + error.message));
+  });
 
   document.getElementById('registerBtn').addEventListener('click', () => {
     const email = document.getElementById('registerEmail').value.trim();
     const senha = document.getElementById('registerPass').value.trim();
     if (!email || !senha) return alert('Preencha email e senha!');
-    
+
     firebase.auth().createUserWithEmailAndPassword(email, senha)
-      .then(() => mostrarConteudoLogado())
+      .then(() => {
+        mostrarConteudoLogado();
+      })
       .catch(error => alert('Erro ao cadastrar: ' + error.message));
   });
 
   btnLogout.addEventListener('click', () => {
     firebase.auth().signOut().then(() => {
-      // Oculta menu do usuário
       document.getElementById('userMenu').style.display = 'none';
-      // Limpa os textos do avatar
       document.getElementById('avatarLetter').textContent = '';
       document.getElementById('userEmail').textContent = '';
-      // Mostra a tela de login
       mostrarLogin();
     }).catch(error => {
       alert('Erro ao sair: ' + error.message);
@@ -123,35 +125,24 @@ addEventListener('DOMContentLoaded', () => {
   });
 
   // ✅ Monitoramento de autenticação
- // Monitoramento de autenticação, só uma vez no script
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    const email = user.email;
-    document.getElementById('userMenu').style.display = 'flex';
-    document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
-    document.getElementById('userEmail').textContent = email;
-    mostrarConteudoLogado();
-    carregarHistorico(email); // Carregar histórico se quiser
-  } else {
-    document.getElementById('userMenu').style.display = 'none';
-    document.getElementById('avatarLetter').textContent = '';
-    document.getElementById('userEmail').textContent = '';
-    mostrarLogin();
-  }
-});
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      const email = user.email;
+      emailUsuarioLogado = email;
+      document.getElementById('userMenu').style.display = 'flex';
+      document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
+      document.getElementById('userEmail').textContent = email;
+      mostrarConteudoLogado();
 
-// Botão login
-btnLogin.addEventListener('click', () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  const senha = document.getElementById('loginPass').value.trim();
-  if (!email || !senha) return alert('Preencha email e senha!');
-
-  firebase.auth().signInWithEmailAndPassword(email, senha)
-    .catch(error => alert('Erro ao entrar: ' + error.message));
-});
-
-});
-
+      // ✅ Removido: carregarHistorico(email);
+      // Se quiser implementar depois, crie a função carregarHistorico!
+    } else {
+      document.getElementById('userMenu').style.display = 'none';
+      document.getElementById('avatarLetter').textContent = '';
+      document.getElementById('userEmail').textContent = '';
+      mostrarLogin();
+    }
+  });
   // Selecionar modelo
 
   document.querySelectorAll('.modelo').forEach(img => {
