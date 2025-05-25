@@ -5,7 +5,17 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const app = express();
+
+// Forçar redirecionamento HTTP -> HTTPS
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
+});
+
 const PORT = process.env.PORT || 3000;
+
 
 // Caminho absoluto da pasta 'src'
 const srcPath = path.join(__dirname, 'src');
