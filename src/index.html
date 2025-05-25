@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="title">Gerador de Certificados Online</title>
 
+  <!-- Meta description para SEO -->
+  <meta name="description" content="Crie certificados online personalizados, fácil, rápido e gratuito. Baixe seu certificado em PDF com vários modelos disponíveis."/>
+
   <!-- Estilos e fontes -->
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather&family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
@@ -128,17 +131,17 @@
       <p class="subtitulo hidden" data-i18n="subtitle">Crie e baixe certificados personalizados de forma prática e gratuita.</p>
 
       <!-- Modelos -->
-      <section class="modelos hidden">
+      <section class="modelos hidden" aria-label="Seleção de modelo de certificado">
         <h2 class="linha-embaixo" data-i18n="selectModel">Escolha seu modelo de certificado</h2>
         <div class="opcoes-modelos">
-          <img class="modelo" src="assets/cert1.png"/>
-          <img class="modelo" src="assets/cert2.png"/>
-          <img class="modelo" src="assets/cert3.png"/>
-          <img class="modelo" src="assets/cert4.png"/>
-          <img class="modelo" src="assets/cert5.png"/>
-          <img class="modelo" src="assets/cert6.png"/>
-          <img class="modelo" src="assets/cert7.png"/>
-          <img class="modelo" src="assets/cert8.png"/>
+          <img class="modelo" src="assets/cert1.png" alt="Modelo de certificado 1"/>
+          <img class="modelo" src="assets/cert2.png" alt="Modelo de certificado 2"/>
+          <img class="modelo" src="assets/cert3.png" alt="Modelo de certificado 3"/>
+          <img class="modelo" src="assets/cert4.png" alt="Modelo de certificado 4"/>
+          <img class="modelo" src="assets/cert5.png" alt="Modelo de certificado 5"/>
+          <img class="modelo" src="assets/cert6.png" alt="Modelo de certificado 6"/>
+          <img class="modelo" src="assets/cert7.png" alt="Modelo de certificado 7"/>
+          <img class="modelo" src="assets/cert8.png" alt="Modelo de certificado 8"/>
         </div>
       </section>
 
@@ -199,8 +202,6 @@
       dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
   </script>
-
-  <!-- ✅ Script principal movido para o final para garantir que o DOM foi carregado -->
   <script src="script.js" type="module"></script>
 </body>
 </html>

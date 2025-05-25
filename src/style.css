@@ -50,13 +50,12 @@ body {
   border-radius: 8px;
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease;
 }
 
 #loginSection input:focus,
 #registerSection input:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
   outline: none;
 }
 
@@ -72,11 +71,8 @@ body {
   padding: 12px 0;
   width: 100%;
   cursor: pointer;
-  user-select: none;
   font-size: 16px;
-  font-family: "Montserrat", sans-serif;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.4);
+  transition: background-color 0.3s ease;
   margin-bottom: 15px;
 }
 
@@ -85,15 +81,6 @@ body {
 #loginSection p button:hover,
 #registerSection p button:hover {
   background-color: #1e40af;
-  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.6);
-}
-
-#loginSection button:focus,
-#registerSection button:focus,
-#loginSection p button:focus,
-#registerSection p button:focus {
-  outline: 3px solid #4f46e5;
-  outline-offset: 3px;
 }
 
 #loginSection p,
@@ -119,7 +106,6 @@ body {
   color: #8fa8fa;
   text-decoration: none;
 }
-
 .user-menu {
   position: absolute;
   top: 1rem;
@@ -157,8 +143,6 @@ header {
   flex-direction: column;
   align-items: center;
   position: relative;
-  box-shadow: 0 3px 10px rgba(29, 78, 216, 0.5);
-  z-index: 10;
 }
 
 header h1 img {
@@ -206,10 +190,8 @@ h2 {
   color: #1e3a8a;
   font-weight: 600;
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 30px;
   font-family: "Montserrat", sans-serif;
-  letter-spacing: 0.03em;
 }
 
 .linha-embaixo {
@@ -271,7 +253,6 @@ input[type="date"] {
   font-size: 16px;
   color: #1a1a1a;
   font-family: "Montserrat", sans-serif;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input::placeholder {
@@ -280,9 +261,8 @@ input::placeholder {
 }
 
 input:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
 }
 
 button {
@@ -292,20 +272,17 @@ button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  user-select: none;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.4);
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #1e40af;
-  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.6);
 }
 
 button:focus {
-  outline: 3px solid #4f46e5;
+  outline: 2px solid #4f46e5;
   outline-offset: 3px;
 }
 
