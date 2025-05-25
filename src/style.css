@@ -50,12 +50,13 @@ body {
   border-radius: 8px;
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #loginSection input:focus,
 #registerSection input:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
   outline: none;
 }
 
@@ -71,8 +72,11 @@ body {
   padding: 12px 0;
   width: 100%;
   cursor: pointer;
+  user-select: none;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  font-family: "Montserrat", sans-serif;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.4);
   margin-bottom: 15px;
 }
 
@@ -81,6 +85,15 @@ body {
 #loginSection p button:hover,
 #registerSection p button:hover {
   background-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.6);
+}
+
+#loginSection button:focus,
+#registerSection button:focus,
+#loginSection p button:focus,
+#registerSection p button:focus {
+  outline: 3px solid #4f46e5;
+  outline-offset: 3px;
 }
 
 #loginSection p,
@@ -106,6 +119,7 @@ body {
   color: #8fa8fa;
   text-decoration: none;
 }
+
 .user-menu {
   position: absolute;
   top: 1rem;
@@ -143,6 +157,8 @@ header {
   flex-direction: column;
   align-items: center;
   position: relative;
+  box-shadow: 0 3px 10px rgba(29, 78, 216, 0.5);
+  z-index: 10;
 }
 
 header h1 img {
@@ -190,8 +206,10 @@ h2 {
   color: #1e3a8a;
   font-weight: 600;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
+  margin-bottom: 20px;
   font-family: "Montserrat", sans-serif;
+  letter-spacing: 0.03em;
 }
 
 .linha-embaixo {
@@ -253,6 +271,7 @@ input[type="date"] {
   font-size: 16px;
   color: #1a1a1a;
   font-family: "Montserrat", sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input::placeholder {
@@ -261,8 +280,9 @@ input::placeholder {
 }
 
 input:focus {
-  outline: 2px solid #4f46e5;
-  outline-offset: 2px;
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
 }
 
 button {
@@ -272,17 +292,20 @@ button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  user-select: none;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.4);
 }
 
 button:hover {
   background-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.6);
 }
 
 button:focus {
-  outline: 2px solid #4f46e5;
+  outline: 3px solid #4f46e5;
   outline-offset: 3px;
 }
 
@@ -335,123 +358,61 @@ button:focus {
   max-width: 1000px;
   width: 100%;
   padding: 10px;
-  box-sizing: border-box;
-}
-
-/* CERTIFICADO GERADO - responsivo */
-.certificado-gerado {
-  width: 100%;
-  max-width: 1000px;
-  aspect-ratio: 10 / 7;
-  background-size: cover;
-  background-position: center;
-  padding: 5%;
-  box-sizing: border-box;
-  position: relative;
-  font-family: serif;
-  text-align: center;
-  color: #000; /* padrão, ajustado via JS */
-}
-
-.certificado-gerado h1 {
-  font-size: 3.5vw;
-  margin-top: 50px;
-  margin-bottom: 40px;
-  font-family: 'Merriweather', serif;
-}
-
-.certificado-gerado p,
-.certificado-gerado h3 {
-  font-size: 1.5vw;
-  margin: 5px 0;
-}
-
-.certificado-gerado strong {
-  font-weight: 700;
-}
-
-/* ASSINATURA DENTRO DO CERTIFICADO */
-.certificado-gerado .assinatura-certificado {
-  margin-top: 40px;
-  text-align: center;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: 'Great Vibes', cursive;
-  font-size: 28px;
-  color: inherit;
-  border-top: 1px solid #000;
-  padding-top: 10px;
-  box-sizing: border-box;
-}
-
-.certificado-gerado .assinatura-certificado img {
-  height: 60px;
-  display: block;
-  margin: 0 auto 8px auto;
-  border-radius: 6px;
-  border: 2px solid #1e3a8a;
-  background: #fff;
-}
-
-.certificado-gerado .assinatura-certificado p {
-  font-size: 1.3vw;
-  margin-top: 5px;
-}
-
-.certificado-gerado .assinatura-certificado span {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2vw;
-  display: block;
 }
 
 /* HISTÓRICO */
-#historicoCertificados {
-  max-width: 800px;
+#listaHistorico {
+  max-width: 700px;
   margin: 30px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 0 15px;
 }
 
-#certificadoPronto {
-  position: relative;
-}
-
-/* BOTÃO BAIXAR PDF */
-#baixarPdf {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 10px 16px;
-  font-size: 1rem;
-  border-radius: 6px;
-  z-index: 10;
-  white-space: nowrap;
-  background-color: #1d4ed8;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#baixarPdf:hover {
-  background-color: #1e40af;
-}
-
-/* LISTA DE HISTÓRICO */
 #listaHistorico div {
   border: 1px solid #ddd;
   padding: 15px;
   margin-bottom: 15px;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #f3f4f6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+  cursor: default;
 }
 
-#listaHistorico p {
-  margin: 5px 0;
-  font-size: 14px;
+#listaHistorico div:hover {
+  box-shadow: 0 6px 15px rgba(29, 78, 216, 0.2);
+}
+
+/* Container do botão Voltar */
+#voltarContainer {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Estilo do botão Voltar */
+#btnVoltar {
+  padding: 12px 24px;
+  background-color: #1d4ed8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#btnVoltar:hover {
+  background-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.6);
+}
+
+#btnVoltar:focus {
+  outline: 3px solid #4f46e5;
+  outline-offset: 3px;
 }
 
 footer {
@@ -461,59 +422,29 @@ footer {
   padding: 40px 20px;
   font-family: "Montserrat", sans-serif;
   margin-top: auto;
+  box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+  user-select: none;
 }
 
-footer .container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-footer .social-icons {
-  margin: 15px 0;
-}
-
-footer .social-icons a {
-  color: white;
-  margin: 0 10px;
-  font-size: 24px;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-footer .social-icons a:hover {
-  color: #93c5fd;
-}
-
-footer p {
-  margin: 5px 0;
-  font-size: 14px;
-}
-
+/* RESPONSIVO */
 @media (max-width: 600px) {
   #loginSection, #registerSection {
-    width: 90%;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 20px 15px;
+    padding: 25px 20px;
   }
-  .opcoes-modelos {
-    flex-direction: column;
-    align-items: center;
-  }
-  .modelo {
-    width: 90%;
-    max-width: 300px;
-  }
+
   .formulario form {
-    padding: 20px 10px;
+    padding: 25px 20px;
   }
-  .certificado-gerado h1 {
-    font-size: 6vw;
+
+  button {
+    font-size: 18px;
+    padding: 14px 20px;
   }
-  .certificado-gerado p, .certificado-gerado h3 {
-    font-size: 3vw;
-  }
-  footer .social-icons a {
-    font-size: 28px;
-    margin: 0 8px;
+
+  #langSwitcher {
+    position: static;
+    margin: 20px 0 0 0;
+    justify-content: center;
   }
 }

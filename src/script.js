@@ -31,11 +31,6 @@ function exibirHistorico(certificados) {
     return;
   }
 
-  certificados.forEach(cert => {
-    const item = document.createElement('li');
-    item.textContent = `${cert.curso} - ${cert.instituicao} (${new Date(cert.dataEnvio).toLocaleString()})`;
-    historicoList.appendChild(item);
-  });
 }
 
 addEventListener('DOMContentLoaded', () => {
@@ -488,11 +483,13 @@ function setLanguage(lang) {
     .then(res => res.json())
     .then(data => {
       currentTexts = data;
-      atualizarTextosNaTela(); // garante que tudo é atualizado de forma consistente
+      atualizarTextosNaTela();
+
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (data[key]) el.textContent = data[key];
       });
+
       document.getElementById('aluno').placeholder = data.aluno;
       document.getElementById('curso').placeholder = data.curso;
       document.getElementById('instituicao').placeholder = data.instituicao;
@@ -500,11 +497,18 @@ function setLanguage(lang) {
       document.getElementById('assinaturaEstilizada').placeholder = data.styledSignaturePlaceholder;
       document.getElementById('limparCanvas').textContent = data.clearSignatureBtn;
       document.getElementById('assinaturaTextoBtn').textContent = data.styledSignatureBtn;
+
       const logoutBtnEl = document.getElementById('logoutBtn');
       if (logoutBtnEl) logoutBtnEl.textContent = currentTexts.logout;
 
+      // ✅ Recarrega histórico se ele estiver visível
+      const historicoEl = document.getElementById('historicoCertificados');
+      if (historicoEl && historicoEl.style.display === 'block') {
+        mostrarHistorico();
+      }
     });
 }
+
 
 function atualizarTextosNaTela() {
   // Título da página
