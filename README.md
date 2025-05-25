@@ -38,8 +38,4 @@ Este projeto foi desenvolvido com o objetivo de praticar habilidades de desenvol
 
 ---
 
-## 📦 Instalação e Execução
-
-### 1. Clone o repositório
-
 
