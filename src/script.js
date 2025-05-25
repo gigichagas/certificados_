@@ -364,7 +364,7 @@ function desenhar(x, y) {
     ajustarCorTexto(certificado);
     document.getElementById('certificadoPronto').style.display = 'block';
 
-    fetch('http://localhost:3000/api/certificados', {
+fetch('https://certificados-production.up.railway.app/api/certificados', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
