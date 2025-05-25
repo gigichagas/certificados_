@@ -2,11 +2,43 @@ let modeloSelecionado = '';
 let currentTexts = {};
 let emailUsuarioLogado = null;
 
-addEventListener('DOMContentLoaded', () => {
-  // ✅ Se quiser sempre iniciar deslogado, descomente a linha abaixo:
-  // firebase.auth().signOut().then(() => console.log('Sessão limpa ao iniciar'));
+function carregarHistorico(email) {
+  if (!email) {
+    console.warn('Usuário não autenticado, não é possível carregar histórico.');
+    return;
+  }
 
-  // Referências principais
+  fetch(`https://certificados-production.up.railway.app/api/certificados?email=${encodeURIComponent(email)}`)
+    .then(res => res.json())
+    .then(certificados => {
+      exibirHistorico(certificados);
+    })
+    .catch(err => console.error('Erro ao carregar histórico:', err));
+}
+
+function exibirHistorico(certificados) {
+  const historicoList = document.getElementById('listaHistorico');
+
+  if (!historicoList) {
+    console.error("Elemento 'listaHistorico' não encontrado no DOM.");
+    return;
+  }
+
+  historicoList.innerHTML = '';
+
+  if (!certificados.length) {
+    historicoList.innerHTML = '<p>Nenhum certificado encontrado.</p>';
+    return;
+  }
+
+  certificados.forEach(cert => {
+    const item = document.createElement('li');
+    item.textContent = `${cert.curso} - ${cert.instituicao} (${new Date(cert.dataEnvio).toLocaleString()})`;
+    historicoList.appendChild(item);
+  });
+}
+
+addEventListener('DOMContentLoaded', () => {
   const loginSection = document.getElementById('loginSection');
   const registerSection = document.getElementById('registerSection');
   const modelosSection = document.querySelector('.modelos');
@@ -14,6 +46,7 @@ addEventListener('DOMContentLoaded', () => {
   const subtitulo = document.querySelector('.subtitulo');
   const certificadoProntoSection = document.getElementById('certificadoPronto');
   const historicoSection = document.getElementById('historicoCertificados');
+  const historicoList = document.getElementById('historicoList'); // precisa de uma UL ou DIV no HTML
 
   const btnLogin = document.getElementById('loginBtn');
   const btnShowRegister = document.getElementById('showRegisterBtn');
@@ -77,7 +110,9 @@ addEventListener('DOMContentLoaded', () => {
 
     firebase.auth().signInWithEmailAndPassword(email, senha)
       .then(() => {
+        emailUsuarioLogado = email;
         mostrarConteudoLogado();
+        carregarHistorico(email);
       })
       .catch(error => alert('Erro ao entrar: ' + error.message));
   });
@@ -89,7 +124,9 @@ addEventListener('DOMContentLoaded', () => {
 
     firebase.auth().createUserWithEmailAndPassword(email, senha)
       .then(() => {
+        emailUsuarioLogado = email;
         mostrarConteudoLogado();
+        carregarHistorico(email);
       })
       .catch(error => alert('Erro ao cadastrar: ' + error.message));
   });
@@ -99,6 +136,7 @@ addEventListener('DOMContentLoaded', () => {
       document.getElementById('userMenu').style.display = 'none';
       document.getElementById('avatarLetter').textContent = '';
       document.getElementById('userEmail').textContent = '';
+      emailUsuarioLogado = null;
       mostrarLogin();
     }).catch(error => {
       alert('Erro ao sair: ' + error.message);
@@ -115,6 +153,7 @@ addEventListener('DOMContentLoaded', () => {
     subtitulo.style.display = 'none';
     certificadoProntoSection.style.display = 'none';
     historicoSection.style.display = 'block';
+    carregarHistorico(emailUsuarioLogado);
   });
 
   btnVoltarHistorico.addEventListener('click', () => {
@@ -124,7 +163,6 @@ addEventListener('DOMContentLoaded', () => {
     subtitulo.style.display = 'block';
   });
 
-  // ✅ Monitoramento de autenticação
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       const email = user.email;
@@ -133,16 +171,16 @@ addEventListener('DOMContentLoaded', () => {
       document.getElementById('avatarLetter').textContent = email.charAt(0).toUpperCase();
       document.getElementById('userEmail').textContent = email;
       mostrarConteudoLogado();
-
-      // ✅ Removido: carregarHistorico(email);
-      // Se quiser implementar depois, crie a função carregarHistorico!
+      carregarHistorico(email);
     } else {
       document.getElementById('userMenu').style.display = 'none';
       document.getElementById('avatarLetter').textContent = '';
       document.getElementById('userEmail').textContent = '';
+      emailUsuarioLogado = null;
       mostrarLogin();
     }
   });
+
   // Selecionar modelo
 
   document.querySelectorAll('.modelo').forEach(img => {
@@ -327,10 +365,25 @@ function desenhar(x, y) {
     document.getElementById('certificadoPronto').style.display = 'block';
 
     fetch('http://localhost:3000/api/certificados', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo: modeloSelecionado, dataEnvio: new Date().toISOString() })
-    }).catch(err => console.error('Erro ao enviar certificado:', err));
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    aluno,
+    curso,
+    instituicao,
+    carga,
+    data1,
+    data2,
+    assinaturaTexto,
+    modelo: modeloSelecionado,
+    dataEnvio: new Date().toISOString(),
+    email: emailUsuarioLogado  // ✅ Adiciona o email aqui
+  })
+})
+.then(res => res.json())
+.then(data => console.log('Certificado salvo:', data))
+.catch(err => console.error('Erro ao enviar certificado:', err));
+
   });
 
   document.getElementById('btnHistoricoForm').addEventListener('click', mostrarHistorico);
@@ -574,46 +627,51 @@ function mostrarHistorico() {
 
   const lista = document.getElementById('listaHistorico');
   lista.innerHTML = '';
-const user = firebase.auth().currentUser;
-const email = user ? user.email : null;
 
-fetch(`https://certificados-production.up.railway.app/api/certificados?email=${encodeURIComponent(email)}`)
-  .then(res => res.json())
-  .then(certificados => {
-    if (!certificados.length) {
-      lista.innerHTML = `<p>${currentTexts.nenhumCertificado}</p>`;
-      return;
-    }
+  const user = firebase.auth().currentUser;
+  const email = user ? user.email : null;
 
-    certificados.reverse().forEach((cert, index) => {
-      const item = document.createElement('div');
-      item.className = 'historico-item';
-      item.style.border = '1px solid #ccc';
-      item.style.padding = '10px';
-      item.style.marginBottom = '10px';
+  if (!email) {
+    lista.innerHTML = '<p>Usuário não autenticado.</p>';
+    return;
+  }
 
-      item.innerHTML = `
-        <p><strong>${currentTexts.alunoLabel}:</strong> ${cert.aluno}</p>
-        <p><strong>${currentTexts.cursoLabel}:</strong> ${cert.curso}</p>
-        <p><strong>${currentTexts.instituicaoLabel}:</strong> ${cert.instituicao}</p>
-        <p><strong>${currentTexts.cargaLabel}:</strong> ${cert.carga}</p>
-        <p><strong>${currentTexts.periodoLabel}:</strong> ${cert.data1}${cert.data2 ? ' - ' + cert.data2 : ''}</p>
-        <p><strong>${currentTexts.dataEnvioLabel}:</strong> ${new Date(cert.dataEnvio).toLocaleString()}</p>
-        <button type="button" class="baixarPdfHistoricoBtn" data-index="${index}">${currentTexts.downloadBtn}</button>
-      `;
+  fetch(`https://certificados-production.up.railway.app/api/certificados?email=${encodeURIComponent(email)}`)
+    .then(res => res.json())
+    .then(certificados => {
+      if (!certificados.length) {
+        lista.innerHTML = `<p>${currentTexts.nenhumCertificado}</p>`;
+        return;
+      }
 
-      lista.appendChild(item);
-    });
+      certificados.reverse().forEach((cert, index) => {
+        const item = document.createElement('div');
+        item.className = 'historico-item';
+        item.style.border = '1px solid #ccc';
+        item.style.padding = '10px';
+        item.style.marginBottom = '10px';
 
-    // Botões de PDF
-    document.querySelectorAll('.baixarPdfHistoricoBtn').forEach(button => {
-      button.addEventListener('click', e => {
-        const idx = e.target.getAttribute('data-index');
-        gerarPdfHistorico(certificados[certificados.length - 1 - idx]);
+        item.innerHTML = `
+          <p><strong>${currentTexts.alunoLabel}:</strong> ${cert.aluno}</p>
+          <p><strong>${currentTexts.cursoLabel}:</strong> ${cert.curso}</p>
+          <p><strong>${currentTexts.instituicaoLabel}:</strong> ${cert.instituicao}</p>
+          <p><strong>${currentTexts.cargaLabel}:</strong> ${cert.carga}</p>
+          <p><strong>${currentTexts.periodoLabel}:</strong> ${cert.data1}${cert.data2 ? ' - ' + cert.data2 : ''}</p>
+          <p><strong>${currentTexts.dataEnvioLabel}:</strong> ${new Date(cert.dataEnvio).toLocaleString()}</p>
+          <button type="button" class="baixarPdfHistoricoBtn" data-index="${index}">${currentTexts.downloadBtn}</button>
+        `;
+
+        lista.appendChild(item);
       });
-    });
-  });
-    
-    
+
+      // Botões de PDF
+      document.querySelectorAll('.baixarPdfHistoricoBtn').forEach(button => {
+        button.addEventListener('click', e => {
+          const idx = e.target.getAttribute('data-index');
+          gerarPdfHistorico(certificados[certificados.length - 1 - idx]);
+        });
+      });
+    })
+    .catch(err => console.error('Erro ao carregar histórico:', err));
 }
 

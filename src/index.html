@@ -71,9 +71,6 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-
-  <!-- Script principal -->
-  <script src="script.js" type="module"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -200,5 +197,8 @@
       dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
   </script>
+
+  <!-- ✅ Script principal movido para o final para garantir que o DOM foi carregado -->
+  <script src="script.js" type="module"></script>
 </body>
 </html>

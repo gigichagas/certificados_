@@ -15,7 +15,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json());
 
-// Serve toda a pasta 'src' como pública (inclui index.html, style.css, script.js, assets, lang)
+// Serve toda a pasta 'src' como pública
 app.use(express.static(srcPath));
 
 // Rota principal
@@ -29,15 +29,15 @@ if (!fs.existsSync(certificadosPath)) {
   fs.writeFileSync(certificadosPath, '[]', 'utf8');
 }
 
-// Rota para salvar certificados
+// ✅ Rota para salvar certificados
 app.post('/api/certificados', (req, res) => {
-  const { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio } = req.body;
+  const { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio, email } = req.body;
 
-  if ([aluno, curso, instituicao, carga, modelo, dataEnvio].some(campo => !campo || campo.trim() === "")) {
+  if ([aluno, curso, instituicao, carga, modelo, dataEnvio, email].some(campo => !campo || campo.trim() === "")) {
     return res.status(400).json({ erro: 'Campos obrigatórios faltando ou vazios.' });
   }
 
-  const novoCertificado = { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio };
+  const novoCertificado = { aluno, curso, instituicao, carga, data1, data2, assinaturaTexto, modelo, dataEnvio, email };
 
   fs.readFile(certificadosPath, 'utf8', (err, data) => {
     let certificados = [];
@@ -58,7 +58,7 @@ app.post('/api/certificados', (req, res) => {
   });
 });
 
-// Rota para listar certificados
+// ✅ Rota para listar certificados
 app.get('/api/certificados', (req, res) => {
   const email = req.query.email;
   fs.readFile(certificadosPath, 'utf8', (err, data) => {
@@ -75,7 +75,6 @@ app.get('/api/certificados', (req, res) => {
     }
   });
 });
-
 
 // Inicia o servidor
 app.listen(PORT, () => {
